@@ -38,15 +38,16 @@ function displayPaints(colorItems){
                     </div>`
         index++;
 
-        document.querySelector("#all-paints").innerHTML = html;
     })
+
+    document.querySelector("#all-paints").innerHTML = html;
+    displayTrending(colorItems);
 }
 
 function displayTrending(colorItems){
-    let trending = colorItems.slice(0, 2);
     let html = "";
-    let index = 0;
-    trending.forEach(paint => {
+    index = 0;
+    colorItems.slice(0, 2).forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1];
 
@@ -68,7 +69,6 @@ function displayTrending(colorItems){
 }
 
 displayPaints(colorItems);
-displayTrending(colorItems);
 
 //should get implemented in html document
 
@@ -76,8 +76,8 @@ displayTrending(colorItems);
 const cart = [];
 
 function addToCart(items, index){
-    cart.push(items[Number(index)]);
-    console.log(cart[index]);
+    cart.push(items[index]);
+    console.log(cart);
     
 }
 
@@ -99,7 +99,6 @@ function displayCart(items){
     sumCartPrice(cart); 
 }
 
-displayCart(cart);
 //search bar
 
 function searchPaints(query) {
