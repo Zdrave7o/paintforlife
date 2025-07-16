@@ -1,30 +1,31 @@
 //items. item creation and display
 const colorItems = [];
 
-function addPaint(color, price){
+function addPaint(color, price, id){
     class Paint{
-    constructor(color, price){
+    constructor(color, price, id){
+        this.id = id;
         this.color = color,
-        this.image = `assets/${color.split("@")[0] + color.split("@")[1]}.png`,
+        this.image = `assets/${color.split("@")[0] + color.split("@")[1] || ""}.png`,
         this.price = Number(price)
      }
     }   
 
-    colorItems.push(new Paint(color, price));
+    colorItems.push(new Paint(color, price, id));
 }
 
-addPaint("dodger@blue", 14.99);
-addPaint("light@green", 14.99);
-addPaint("red@", 14.99);
-addPaint("pink@", 14.99);
-addPaint("yellow@", 14.99);
+addPaint("dodger@blue", 14.99, 1);
+addPaint("light@green", 14.99, 2);
+addPaint("red@", 14.99, 3);
+addPaint("pink@", 14.99, 4);
+addPaint("yellow@", 14.99, 5);
 
 function displayPaints(colorItems){
     let index=0;
     let html = "";
     colorItems.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
-        let secondWord = paint.color.split("@")[1];
+        let secondWord = paint.color.split("@")[1] || "";
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                         <img src="${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
@@ -32,7 +33,7 @@ function displayPaints(colorItems){
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(colorItems, ${index})">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id})">Add to Cart</button>
                             </div>
                         </div>
                     </div>`
@@ -59,7 +60,7 @@ function displayTrending(colorItems){
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(trending, ${index})">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id})">Add to Cart</button>
                             </div>
                         </div>
                     </div>`
@@ -75,28 +76,29 @@ displayPaints(colorItems);
 //cart actions
 const cart = [];
 
-function addToCart(items, index){
-    cart.push(items[index]);
-    console.log(cart);
-    
+function addToCart(id){
+    const paint = colorItems.find(item => item.id === id);
+    const existing = cart.find(item => item.id === id);
+    if(existing){
+        existing.quantity++;
+    }else{
+        cart.push({...paint, quantity: 1});
+    }
+
+    updateCart(cart);
 }
 
-function sumCartPrice(items){
-    let cartPrice = 0;
-    items.forEach(item =>{
-        cartPrice+= item.price;
-    })
 
-    console.log(cartPrice.toFixed(2));
-    
-}
+function updateCart(items){
+    let total = 0;
 
-function displayCart(items){
     items.forEach(item => {
-        console.log(item.color, item.price);
+        total += item.price * item.quantity;
+        console.log(item);
+        
     })
-
-    sumCartPrice(cart); 
+    console.log(total.toFixed(2));
+    
 }
 
 //search bar
