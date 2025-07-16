@@ -112,24 +112,17 @@ function updateCart(items){
                                         <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</p>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-        
-                                        <input id="form1" min="0" name="quantity" value="${item.quantity}" type="number"
-                                            class="form-control form-control-sm" />
-            
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                        >
-                                            <i class="fas fa-plus"></i>
-                                        </button>
+                                        <button class="btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+
+                                        <h4>${item.quantity}</h4>
+
+                                        <button class="btn" onclick="changeQuantity(${item.id}, 1)">+</button>
                                     </div>
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                         <h5 class="mb-0">${item.price.toFixed(2)}</h5>
                                     </div>
                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg">Remove</i></a>
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg" onclick="removeFromCart(${item.id})">Remove</i></a>
                                     </div>
                                 </div>
                             </div>
@@ -158,6 +151,30 @@ function updateCart(items){
                         </div>`;
     console.log(total.toFixed(2));
     
+}
+
+function removeFromCart(id){
+    const item = cart.find(p => p.id === id);
+    if (item) {
+        const index = cart.indexOf(item);
+        cart.splice(index, 1);
+    }
+
+    updateCart(cart);
+}
+
+function changeQuantity(id, delta) {
+    const item = cart.find(p => p.id === id);
+
+    if (!item) return;
+
+    item.quantity += delta;
+
+    if (item.quantity <= 0) {
+        removeFromCart(id);
+    }
+
+    updateCart(cart);
 }
 
 let cartHtml = document.querySelector("#cart");
