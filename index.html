@@ -12,7 +12,7 @@
 
 <body class="m-0 p-0 overflow-x-hidden">
     <main>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary position-relative">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
                     <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1969/1969555.png">
@@ -31,11 +31,50 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#all-paints">Paints</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="openCart()" href="#">Cart</a>
+                        </li>
                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search" />
                         <button class="search-button" type="submit" onclick="location.href='#all-paints'">Search</button>
                     </form>
+                </div>
+            </div>
+
+            <div class="col-xxl-6 custom-cart bg-body-tertiary" id="cart">
+                <div class="row d-flex justify-content-center align-items-center p-3" style="min-height: 100px;">
+                    <div class="col-10" id="cartHtml">
+            
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0">Shopping Cart</h3>
+                            <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
+                            <div>
+                                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
+                                            class="fas fa-angle-down mt-1"></i></a></p>
+                            </div>
+                        </div>
+            
+                        
+                        <div class="card mb-4">
+                            <div class="card-body p-4 d-flex flex-row">
+                                <div data-mdb-input-init class="form-outline flex-fill">
+                                    <input type="text" id="form1" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form1">Discound code</label>
+                                </div>
+                                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                            </div>
+                        </div>
+            
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+                            </div>
+                        </div>
+            
+                    </div>
                 </div>
             </div>
         </nav>

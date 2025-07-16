@@ -45,3 +45,11 @@
 .blend-img{
     mix-blend-mode: multiply;
 }
+
+.custom-cart{
+    top:60px;
+    position: absolute;
+    z-index: 6;
+    background-color: rgba(0, 0, 0, 0.5);
+    right:0;
+}

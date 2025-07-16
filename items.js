@@ -42,7 +42,6 @@ function displayPaints(colorItems){
     })
 
     document.querySelector("#all-paints").innerHTML = html;
-    displayTrending(colorItems);
 }
 
 function displayTrending(colorItems){
@@ -50,7 +49,7 @@ function displayTrending(colorItems){
     index = 0;
     colorItems.slice(0, 2).forEach(paint => {
         let firstWord = paint.color.split("@")[0];
-        let secondWord = paint.color.split("@")[1];
+        let secondWord = paint.color.split("@")[1] || "";
 
         html+= `<div class="card shadow-sm
          border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
@@ -68,7 +67,7 @@ function displayTrending(colorItems){
     })
     document.querySelector("#trending").innerHTML = html;
 }
-
+displayTrending(colorItems);
 displayPaints(colorItems);
 
 //should get implemented in html document
@@ -91,14 +90,85 @@ function addToCart(id){
 
 function updateCart(items){
     let total = 0;
+    let html = `<div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0">Shopping Cart</h3>
+                            <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
+                            <div>
+                                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
+                                            class="fas fa-angle-down mt-1"></i></a></p>
+                            </div>
+                        </div>`;
 
     items.forEach(item => {
+        let firstWord = item.color.split("@")[0];
+        let secondWord = item.color.split("@")[1] || "";
+        html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="${item.image}"
+                                            class="img-fluid rounded-3" alt="paint">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+        
+                                        <input id="form1" min="0" name="quantity" value="${item.quantity}" type="number"
+                                            class="form-control form-control-sm" />
+            
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                                        >
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">${item.price.toFixed(2)}</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg">Remove</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
         total += item.price * item.quantity;
         console.log(item);
         
     })
+    document.querySelector("#cartHtml").innerHTML = html + `<div class="card mb-4">
+                            <div class="card-body p-4 d-flex flex-row">
+                                <div data-mdb-input-init class="form-outline flex-fill">
+                                    <input type="text" id="form1" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form1">Discound code</label>
+                                </div>
+                                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                            </div>
+                        </div>
+            
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+                            </div>
+                        </div>`;
     console.log(total.toFixed(2));
     
+}
+
+let cartHtml = document.querySelector("#cart");
+cartHtml.style.display = "none";
+
+function openCart(){
+    cartHtml.style.display = "block";
+}
+
+function closeCart(){
+    cartHtml.style.display = "none";
 }
 
 //search bar
