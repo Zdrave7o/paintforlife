@@ -50,8 +50,7 @@
                             <h3 class="fw-normal mb-0">Shopping Cart</h3>
                             <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
                             <div>
-                                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
-                                            class="fas fa-angle-down mt-1"></i></a></p>
+                                <p class="mb-0"><span class="text-body" id="total">Total: $0.00 </span></p>
                             </div>
                         </div>
             
@@ -59,8 +58,8 @@
                         <div class="card mb-4">
                             <div class="card-body p-4 d-flex flex-row">
                                 <div data-mdb-input-init class="form-outline flex-fill">
-                                    <input type="text" id="form1" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form1">Discound code</label>
+                                    <input type="text" id="promo" class="form-control form-control-lg" />
+                                    <label class="form-label" for="promo">Discound code</label>
                                 </div>
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-outline-warning btn-lg ms-3">Apply</button>

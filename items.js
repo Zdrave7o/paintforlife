@@ -70,8 +70,6 @@ function displayTrending(colorItems){
 displayTrending(colorItems);
 displayPaints(colorItems);
 
-//should get implemented in html document
-
 //cart actions
 const cart = [];
 
@@ -90,16 +88,18 @@ function addToCart(id){
 
 function updateCart(items){
     let total = 0;
+    let itemCount = 0;
     let html = `<div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0">Shopping Cart</h3>
                             <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
                             <div>
-                                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
-                                            class="fas fa-angle-down mt-1"></i></a></p>
+                                <p class="mb-0"><span class="text-body" id="total">Total: </span></p>
                             </div>
                         </div>`;
 
     items.forEach(item => {
+        total += item.price * item.quantity;
+        itemCount += item.quantity;
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
         html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
@@ -112,34 +112,43 @@ function updateCart(items){
                                         <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</p>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button class="btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                                        <button class="btn quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
 
                                         <h4>${item.quantity}</h4>
 
-                                        <button class="btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                                        <button class="btn quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
                                     </div>
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 class="mb-0">${item.price.toFixed(2)}</h5>
+                                        <h5 class="mb-0">${item.price.toFixed(2)}$</h5>
                                     </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                    <div class="col-md-1 col-lg-2 col-xl-2 text-end">
                                         <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg" onclick="removeFromCart(${item.id})">Remove</i></a>
                                     </div>
                                 </div>
                             </div>
                         </div>`;
 
-        total += item.price * item.quantity;
         console.log(item);
         
     })
-    document.querySelector("#cartHtml").innerHTML = html + `<div class="card mb-4">
+    document.querySelector("#cartHtml").innerHTML = html + `
+                            <div class="card mb-4">
+                            <div class="card-body p-4 d-flex flex-row">
+                                <div class="form-outline flex-fill">
+                                    <p class="lead fw-normal mb-2">Total items: ${itemCount}</p>
+                                    <p class="lead fw-normal mb-2" id="total2">Total price: $<span id="total">${total.toFixed(2)}</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
                             <div class="card-body p-4 d-flex flex-row">
                                 <div data-mdb-input-init class="form-outline flex-fill">
-                                    <input type="text" id="form1" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form1">Discound code</label>
+                                    <input type="text" id="promo" class="form-control form-control-lg" />
+                                    <label class="form-label" for="promo">Discound code</label>
                                 </div>
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                                    class="btn btn-outline-warning btn-lg ms-3" onclick='applyPromoCode()'>Apply</button>
                             </div>
                         </div>
             
@@ -150,7 +159,7 @@ function updateCart(items){
                             </div>
                         </div>`;
     console.log(total.toFixed(2));
-    
+    document.querySelector("#total").textContent =`Total: $${total.toFixed(2)}`;
 }
 
 function removeFromCart(id){
@@ -200,3 +209,31 @@ document.querySelector(".search-button").addEventListener("click", function(even
     const query = document.querySelector(".search").value;
     searchPaints(query);
 });
+
+//promo code
+let isUsed = false;
+
+function applyPromoCode() {
+    const secretCode = "PAINT20";
+    const inputCode = document.querySelector("#promo").value.trim();
+    if (inputCode === secretCode && isUsed === false) {
+        alert("Promo code applied successfully! You get a 20% discount.");
+        isUsed = true;
+        const totalElement = document.querySelector("#total");
+        const currentTotal = parseFloat(totalElement.textContent.replace("Total: $", ""));
+        const discountedTotal = currentTotal * 0.8; // Apply 20% discount
+        totalElement.textContent = `Total: $${discountedTotal.toFixed(2)}`;
+        document.querySelector("#total2").textContent = `Total price: $${discountedTotal.toFixed(2)}`;
+    } else {
+        switch (inputCode) {
+            case "":
+                alert("Please enter a promo code.");
+                break;
+            case secretCode:
+                alert("Promo code already used.");
+                break;
+            default:
+                alert("Invalid promo code. Please try again.");
+        }
+    }
+}
