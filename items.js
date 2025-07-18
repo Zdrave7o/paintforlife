@@ -26,6 +26,7 @@ function displayPaints(colorItems){
     colorItems.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                         <img src="${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
@@ -33,7 +34,7 @@ function displayPaints(colorItems){
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id})">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                             </div>
                         </div>
                     </div>`
@@ -50,7 +51,7 @@ function displayTrending(colorItems){
     colorItems.slice(0, 2).forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
-
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
         html+= `<div class="card shadow-sm
          border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                         <img src="${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
@@ -59,7 +60,7 @@ function displayTrending(colorItems){
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id})">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                             </div>
                         </div>
                     </div>`
@@ -90,7 +91,7 @@ function updateCart(items){
     let total = 0;
     let itemCount = 0;
     let html = `<div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0">Shopping Cart</h3>
+                            <h3 class="fw-normal mb-0">Cart</h3>
                             <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
                             <div>
                                 <p class="mb-0"><span class="text-body" id="total">Total: </span></p>
@@ -102,6 +103,7 @@ function updateCart(items){
         itemCount += item.quantity;
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} removed from cart.`;
         html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2">
@@ -122,7 +124,7 @@ function updateCart(items){
                                         <h5 class="mb-0">${item.price.toFixed(2)}$</h5>
                                     </div>
                                     <div class="col-md-1 col-lg-2 col-xl-2 text-end">
-                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg" onclick="removeFromCart(${item.id})">Remove</i></a>
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg" onclick="removeFromCart(${item.id}); showNotification('${message}');">Remove</i></a>
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +147,7 @@ function updateCart(items){
                             <div class="card-body p-4 d-flex flex-row">
                                 <div data-mdb-input-init class="form-outline flex-fill">
                                     <input type="text" id="promo" class="form-control form-control-lg" />
-                                    <label class="form-label" for="promo">Discound code</label>
+                                    <label class="form-label" for="promo">Discount code</label>
                                 </div>
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-outline-warning btn-lg ms-3" onclick='applyPromoCode()'>Apply</button>
@@ -155,7 +157,7 @@ function updateCart(items){
                         <div class="card">
                             <div class="card-body">
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+                                    class="btn btn-warning btn-block btn-lg" onclick='openOrderMenu()'>Proceed to Order</button>
                             </div>
                         </div>`;
     console.log(total.toFixed(2));
@@ -170,6 +172,7 @@ function removeFromCart(id){
     }
 
     updateCart(cart);
+    
 }
 
 function changeQuantity(id, delta) {
@@ -187,7 +190,6 @@ function changeQuantity(id, delta) {
 }
 
 let cartHtml = document.querySelector("#cart");
-cartHtml.style.display = "none";
 
 function openCart(){
     cartHtml.style.display = "block";
@@ -216,7 +218,10 @@ let isUsed = false;
 function applyPromoCode() {
     const secretCode = "PAINT20";
     const inputCode = document.querySelector("#promo").value.trim();
-    if (inputCode === secretCode && isUsed === false) {
+    if (cart.length === 0) {
+        alert("Your cart is empty. Please add items to your cart before applying a promo code.");
+    }
+    else if (inputCode === secretCode && isUsed === false) {
         alert("Promo code applied successfully! You get a 20% discount.");
         isUsed = true;
         const totalElement = document.querySelector("#total");
@@ -236,4 +241,29 @@ function applyPromoCode() {
                 alert("Invalid promo code. Please try again.");
         }
     }
+}
+
+//order menu
+const orderMenu = document.querySelector("#order-menu");
+
+function openOrderMenu() {
+    closeCart();
+    orderMenu.style.display = "flex";
+}
+
+function closeOrderMenu() {
+    orderMenu.style.display = "none";
+}
+
+//notification
+function showNotification(message) {
+    const notification = document.querySelector(".notification");
+    notification.innerHTML= `<div class="container bg-light w-50 shadow p-3" style="min-height: 50px;">
+                <h5>${message}</h5>
+            </div>`;
+    notification.classList.add("show");
+
+    setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
 }
