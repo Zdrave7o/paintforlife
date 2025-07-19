@@ -267,3 +267,57 @@ function showNotification(message) {
     notification.classList.remove("show");
   }, 3000);
 }
+
+//order 
+function confirmOrder() {
+    const name = document.querySelector("#name").value;
+    const secondName = document.querySelector("#second-name").value;
+    const email = document.querySelector("#email").value;
+    const phone = document.querySelector("#phone").value;
+    const address = document.querySelector("#address").value;
+    if(cart.length === 0) {
+        alert("Your cart is empty. Please add items to your cart before placing an order.");
+        return;
+    }
+
+    if (!name || !email || !phone || !address) {
+        alert("Please fill in all fields.");
+        return;
+    } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    } else if (!/^\d{10}$/.test(phone)) {
+        alert("Please enter a valid phone number (10 digits).");
+        return;
+    }
+
+    class Order {
+        constructor(name, email, phone, address) {
+            this.name = name + " " + secondName;
+            this.email = email;
+            this.phone = phone;
+            this.address = address;
+            this.price = parseFloat(document.querySelector("#total").textContent.replace("Total: $", ""));
+        }
+    }
+
+    const order = new Order(name, email, phone, address);
+    fetch('/submit-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Order received:", data);
+        })
+        .catch(error => console.error("Error:", error));
+
+    alert(`Order confirmed!\nName: ${order.name}\nEmail: ${order.email}\nPhone: ${order.phone}\nAddress: ${order.address}`);
+    console.log(order.price);
+    cart.length = 0; // Clear the cart after order confirmation
+    updateCart(cart);
+    closeOrderMenu();
+}

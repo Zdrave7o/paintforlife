@@ -90,7 +90,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
                                 <div class="form-group">
                                     <!-- <label for="name">Name</label> --> <input class="form-control" type="text"
-                                        placeholder="Name">
+                                        placeholder="First Name" id="name">
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
                                 <div class="form-group">
                                     <!-- <label for="name">Name</label> --> <input class="form-control" type="text"
-                                        placeholder="Name">
+                                        placeholder="Second Name" id="second-name">
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,8 @@
                         <div class="row my-3">
                             <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
                                 <div class="form-group">
-                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Mobile">
+                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Mobile" id="phone">
+                                        <div class="input-group-text">+1</div>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +116,16 @@
                         <div class="row my-3">
                             <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
                                 <div class="form-group">
-                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Email ID">
+                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Email" id="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row my-3">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                                <div class="form-group">
+                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Address" id="address">
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +133,7 @@
                         <div class="row">
                             <div class=" d-flex flex-column text-center px-5 mt-3 mb-3"> <small class="agree-text">By placing this
                                     order you agree to</small> <a href="#" class="terms">Terms & Conditions</a> </div>
-                            <button class="btn btn-primary btn-block confirm-button col-lg-4 col-sm-6 mx-auto">Confirm</button>
+                            <button class="btn btn-danger btn-block confirm-button col-lg-4 col-sm-6 mx-auto" onclick="confirmOrder()">Confirm</button>
                         </div>
                     </div>
                 </div>
