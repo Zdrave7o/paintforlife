@@ -297,27 +297,40 @@ function confirmOrder() {
             this.email = email;
             this.phone = phone;
             this.address = address;
+            this.items = cart.map(item => ({
+                color: item.color,
+                quantity: item.quantity,
+                price: item.price
+            }));
             this.price = parseFloat(document.querySelector("#total").textContent.replace("Total: $", ""));
         }
     }
 
     const order = new Order(name, email, phone, address);
-    fetch('/submit-order', {
+    localStorage.setItem("order", JSON.stringify(order));
+
+    fetch('http://127.0.0.1:5000/submit-order', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(order)
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log("Order received:", data);
+            console.log("Order successfully sent:", data);
         })
         .catch(error => console.error("Error:", error));
 
-    alert(`Order confirmed!\nName: ${order.name}\nEmail: ${order.email}\nPhone: ${order.phone}\nAddress: ${order.address}`);
+    alert(`Order confirmed!\nName: ${order.name}\nEmail: ${order.email}\nPhone: ${order.phone}\nAddress: ${order.address}\nItems: ${order.items.map(item => `${item.color} (x${item.quantity})`).join(", ")}\nTotal Price: $${order.price.toFixed(2)}`);
     console.log(order.price);
     cart.length = 0; // Clear the cart after order confirmation
     updateCart(cart);
     closeOrderMenu();
+    localStorage.removeItem("order");
 }
