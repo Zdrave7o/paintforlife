@@ -191,6 +191,10 @@ function changeQuantity(id, delta) {
     item.quantity += delta;
 
     if (item.quantity <= 0) {
+        let firstWord = item.color.split("@")[0];
+        let secondWord = item.color.split("@")[1] || "";
+        
+        showNotification(`${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} removed from cart.`);
         removeFromCart(id);
     }
 
