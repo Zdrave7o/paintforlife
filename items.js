@@ -1,5 +1,12 @@
 //items. item creation and display
+
 const colorItems = [];
+
+document.addEventListener("DOMContentLoaded", function() {
+    displayPaints(colorItems);
+    displayTrending(colorItems);
+    updateCart(cart);
+});
 
 function addPaint(color, price, id){
     class Paint{
@@ -72,7 +79,7 @@ displayTrending(colorItems);
 displayPaints(colorItems);
 
 //cart actions
-const cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function addToCart(id){
     const paint = colorItems.find(item => item.id === id);
@@ -88,6 +95,8 @@ function addToCart(id){
 
 
 function updateCart(items){
+    localStorage.setItem("cart", JSON.stringify(items));
+    items = JSON.parse(localStorage.getItem("cart")) || [];
     let total = 0;
     let itemCount = 0;
     let html = `<div class="d-flex justify-content-between align-items-center mb-4">
@@ -96,8 +105,7 @@ function updateCart(items){
                             <div>
                                 <p class="mb-0"><span class="text-body" id="total">Total: </span></p>
                             </div>
-                        </div>`;
-
+                        </div>`
     items.forEach(item => {
         total += item.price * item.quantity;
         itemCount += item.quantity;
