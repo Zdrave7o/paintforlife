@@ -15,7 +15,7 @@ function addPaint(color, price, type, id){
         this.id = id;
         this.color = color,
         this.type = type || "paint",
-        this.image = `assets/${color.split("@")[0] + color.split("@")[1] || ""}.png`,
+        this.image = `${color.split("@")[0] + color.split("@")[1] || ""}.png`,
         this.price = Number(price)
      }
     }   
@@ -37,7 +37,6 @@ function createPaints(){
 
 
 function displayPaints(colorItems){
-    let index=0;
     let html = "";
     const colors = colorItems.filter(paint => paint.type === "paint");
     colors.forEach(paint => {
@@ -45,7 +44,7 @@ function displayPaints(colorItems){
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
@@ -55,8 +54,26 @@ function displayPaints(colorItems){
                             </div>
                         </div>
                     </div>`
-        index++;
 
+
+    })
+
+    const sprays = colorItems.filter(paint => paint.type === "spray");
+    sprays.forEach(paint => {
+        let firstWord = paint.color.split("@")[0];
+        let secondWord = paint.color.split("@")[1] || "";
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
+        html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
+                        <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</h5>
+                            <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} spray designed for all surfaces</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="fw-bold">$${paint.price.toFixed(2)}</span>
+                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>`
     })
 
     document.querySelector("#all-paints").innerHTML = html;
@@ -71,7 +88,7 @@ function displayTrending(colorItems){
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
         html+= `<div class="card shadow-sm
          border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
