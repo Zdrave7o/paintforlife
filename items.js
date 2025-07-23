@@ -10,14 +10,30 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function addPaint(color, price, type, id){
+    type = type.charAt(0).toUpperCase() + type.slice(1);
+    let imageName = color.split("@")[0] + (color.split("@")[1] || "");
+    switch(type) {
+        case "Paint":
+            imageName = `${imageName}.png`;
+            break;
+        case "Spray":
+            imageName = `spray-${imageName}.png`;
+            break;
+        default:
+            console.error("Unknown paint type:", type);
+            return;
+            break;
+    }
+
+
     class Paint{
     constructor(color, price, id){
         this.id = id;
         this.color = color,
-        this.type = type || "paint",
-        this.image = `${color.split("@")[0] + color.split("@")[1] || ""}.png`,
+        this.type = type || "Paint",
+        this.image = imageName,
         this.price = Number(price)
-     }
+    }
     }   
 
     colorItems.push(new Paint(color, price, id));
@@ -39,15 +55,15 @@ function createPaints(){
 
 function displayPaints(colorItems){
     let html = "";
-    const colors = colorItems.filter(paint => paint.type === "paint");
+    const colors = colorItems.filter(paint => paint.type === "Paint");
     colors.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
-        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                         <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
-                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</h5>
+                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
@@ -62,7 +78,7 @@ function displayPaints(colorItems){
     document.querySelector("#all-paints").innerHTML = html;
 
     html = "";
-    const sprays = colorItems.filter(paint => paint.type === "spray");
+    const sprays = colorItems.filter(paint => paint.type === "Spray");
     sprays.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
@@ -90,12 +106,12 @@ function displayTrending(colorItems){
     colorItems.slice(0, 2).forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
-        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm
          border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                         <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
-                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</h5>
+                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
@@ -107,8 +123,6 @@ function displayTrending(colorItems){
     })
     document.querySelector("#trending").innerHTML = html;
 }
-displayTrending(colorItems);
-displayPaints(colorItems);
 
 //cart actions
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -143,15 +157,16 @@ function updateCart(items){
         itemCount += item.quantity;
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
-        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} removed from cart.`;
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} removed from cart.`;
         html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img src="${item.image}"
+                                        <img src="assets/${item.image}"
                                             class="img-fluid rounded-3" alt="paint">
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</p>
+                                        <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}
+                                        ${item.type}</p>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                         <button class="btn quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
