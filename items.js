@@ -33,6 +33,7 @@ function createPaints(){
 
     addPaint("purple@", 14.99, "spray", colorCreationId++);
     addPaint("yellow@", 14.99, "spray", colorCreationId++);
+    addPaint("red@", 14.99, "spray", colorCreationId++);
 }
 
 
@@ -58,6 +59,9 @@ function displayPaints(colorItems){
 
     })
 
+    document.querySelector("#all-paints").innerHTML = html;
+
+    html = "";
     const sprays = colorItems.filter(paint => paint.type === "spray");
     sprays.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
@@ -66,7 +70,7 @@ function displayPaints(colorItems){
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                         <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
                         <div class="card-body">
-                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}</h5>
+                            <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} Spray Can</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} spray designed for all surfaces</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
@@ -76,7 +80,8 @@ function displayPaints(colorItems){
                     </div>`
     })
 
-    document.querySelector("#all-paints").innerHTML = html;
+    document.querySelector("#spray-cans").innerHTML = html;
+    
 }
 
 function displayTrending(colorItems){
