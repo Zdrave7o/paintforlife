@@ -3,16 +3,18 @@
 const colorItems = [];
 
 document.addEventListener("DOMContentLoaded", function() {
+    createPaints();
     displayPaints(colorItems);
     displayTrending(colorItems);
     updateCart(cart);
 });
 
-function addPaint(color, price, id){
+function addPaint(color, price, type, id){
     class Paint{
     constructor(color, price, id){
         this.id = id;
         this.color = color,
+        this.type = type || "paint",
         this.image = `assets/${color.split("@")[0] + color.split("@")[1] || ""}.png`,
         this.price = Number(price)
      }
@@ -21,16 +23,24 @@ function addPaint(color, price, id){
     colorItems.push(new Paint(color, price, id));
 }
 
-addPaint("dodger@blue", 14.99, 1);
-addPaint("light@green", 14.99, 2);
-addPaint("red@", 14.99, 3);
-addPaint("pink@", 14.99, 4);
-addPaint("yellow@", 14.99, 5);
+function createPaints(){
+    let colorCreationId = 0;
+    addPaint("dodger@blue", 14.99, "paint", colorCreationId++);
+    addPaint("light@green", 14.99, "paint", colorCreationId++);
+    addPaint("red@", 14.99, "paint", colorCreationId++);
+    addPaint("pink@", 14.99, "paint", colorCreationId++);
+    addPaint("yellow@", 14.99, "paint", colorCreationId++);
+
+    addPaint("purple@", 14.99, "spray", colorCreationId++);
+    addPaint("yellow@", 14.99, "spray", colorCreationId++);
+}
+
 
 function displayPaints(colorItems){
     let index=0;
     let html = "";
-    colorItems.forEach(paint => {
+    const colors = colorItems.filter(paint => paint.type === "paint");
+    colors.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} added to cart.`;
