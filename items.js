@@ -1,8 +1,9 @@
 //items. item creation and display
-
+const pages = ["home-page", "paints-page", "sprays-page"];
 const colorItems = [];
 
 document.addEventListener("DOMContentLoaded", function() {
+    openPage("home-page");
     createPaints();
     displayPaints(colorItems);
     displayTrending(colorItems);
@@ -61,7 +62,7 @@ function displayPaints(colorItems){
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id})">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
@@ -76,6 +77,7 @@ function displayPaints(colorItems){
     })
 
     document.querySelector("#all-paints").innerHTML = html;
+    document.querySelector("#paints-list").innerHTML = html;
 
     html = "";
     const sprays = colorItems.filter(paint => paint.type === "Spray");
@@ -84,7 +86,7 @@ function displayPaints(colorItems){
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
+                        <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id})">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} Spray Can</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} spray designed for all surfaces</p>
@@ -109,7 +111,7 @@ function displayTrending(colorItems){
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm
          border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id})">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
@@ -392,4 +394,36 @@ function confirmOrder() {
     updateCart(cart);
     closeOrderMenu();
     localStorage.removeItem("order");
+}
+
+//page manipulation
+function openProductPage(color, price, type, id){
+    console.log(`Opening product page for color: ${color}, price: ${price}, type: ${type}, id: ${id}`);
+    
+}
+
+function openPage(page){
+    const currentPage = pages.find((currentPage) => currentPage === page);
+    if(currentPage === page){
+        console.log(`Opening page: ${page}`);
+        pages.forEach((p) => {
+            switch(p){
+                case page:
+                    document.querySelector(`#${p}`).classList.remove("d-none");
+                    document.querySelector(`#${p}`).classList.add("d-block");
+                    document.querySelector(`#${p}-button`).classList.add("active");
+                    break;
+                default:
+                    document.querySelector(`#${p}`).classList.remove("d-block");
+                    document.querySelector(`#${p}`).classList.add("d-none");
+                    document.querySelector(`#${p}-button`).classList.remove("active");
+                    break;
+            }
+        })
+    }
+    else{
+        console.log("error");
+        
+    }
+
 }
