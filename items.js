@@ -99,6 +99,7 @@ function displayPaints(colorItems){
     })
 
     document.querySelector("#spray-cans").innerHTML = html;
+    document.querySelector("#sprays-list").innerHTML = html;
     
 }
 
