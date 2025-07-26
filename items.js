@@ -416,14 +416,15 @@ function openProductPage(color, price, type, id, image){
     let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} added to cart.`;
     productDetails.innerHTML = `
         <img src="assets/${image}" class="img-fluid col-lg-3 col-sm-5 px-3" alt="Product Image">
-                <div class="col-lg-3 col-sm-5 px-2">
-                    <h2 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type}</h2>
-                    <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} designed for smooth finish</p>
-                    <h4 class="card-text text-black my-1">Price:${price}$ </h4>
+                <div class="col-lg-3 col-sm-5 p-3">
+                    <h2 class="card-title mt-3 py-2" style="border-bottom: 5px solid ${firstWord + secondWord}">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type}</h2>
+                    <p class="card-text text-muted mt-3">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} designed for smooth finish</p>
+                    <h4 class="card-text text-black mt-3">Price: <span class="font-weight-bolder">$${price}</span> </h4>
                     <div class="container-fluid w-100 p-0 m-0">
                         <button class="btn btn-sm p-0 m-0 w-50 h-100 p-2 fw-bold" style="background-color:${firstWord + secondWord};" onclick="addToCart(${id}); showNotification('${message}');">Add To Cart</button>
                     </div>
-                </div>`
+                </div>`;
+
 
     const similarProductsList = document.querySelector('#similar-products');
     const similarProducts = colorItems.filter(paint => paint.type === type && paint.color !== color);

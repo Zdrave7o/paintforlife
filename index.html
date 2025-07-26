@@ -246,23 +246,6 @@
 
             </div>
         </section>
-        <section class="footer h-100" id="footer">
-            <div class="row p-3 text-bg-danger w-100 m-auto">
-                <div class="col-lg-6 col-sm-12">
-                    <h4>Who are we?</h4>
-                    <p>We are a company that provides the best quality paints and tools for your needs. Our mission is
-                        to
-                        bring color to your life with our wide range of products.</p>
-                </div>
-                <div class="col-lg-6 col-sm-12">
-                    <h4>Information</h4>
-                    <p class="p-0 m-0"><span class="fw-medium">Address:</span> Fake Address</p>
-                    <p class="p-0 m-0"><span class="fw-medium">Phone:</span> +1 234 567 890</p>
-                    <p class="p-0 m-0"><span class="fw-medium">Email:</span> fakemail@fake.fake</p>
-                </div>
-            </div>
-        </section>
-
     </main>
     <main id="paints-page" class="d-none page">
         <div class="container text-center p-4">
@@ -306,26 +289,6 @@
                 <div class="col-lg-5 m-auto text-center">
                     <h1>Related Products</h1>
                     <h6 style="color: red;">Products, related to the ones you viewed</h6>
-                    <!--
-                    
-
-function openPage(pageId){
-    const pages = document.querySelectorAll(".page");
-    pages.forEach(page => {
-        page.classList.add("d-none");
-        page.classList.remove("d-block");
-    })
-    const buttons = document.querySelectorAll(".pagebtn");
-    buttons.forEach(button => {
-        button.classList.remove("active");
-    });
-
-    const targetPage = document.querySelector(`#${pageId}`);
-    targetPage.classList.remove("d-none");
-    targetPage.classList.add("d-block");
-    document.querySelector(`#${pageId}-button`).classList.add("active");
-
-}-->
                 </div>
             </div>
         </div>
@@ -333,6 +296,22 @@ function openPage(pageId){
 
         </div>
     </main>
+    <section class="footer h-100" id="footer">
+            <div class="row p-3 text-bg-danger w-100 m-auto">
+                <div class="col-lg-6 col-sm-12">
+                    <h4>Who are we?</h4>
+                    <p>We are a company that provides the best quality paints and tools for your needs. Our mission is
+                        to
+                        bring color to your life with our wide range of products.</p>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <h4>Information</h4>
+                    <p class="p-0 m-0"><span class="fw-medium">Address:</span> Fake Address</p>
+                    <p class="p-0 m-0"><span class="fw-medium">Phone:</span> +1 234 567 890</p>
+                    <p class="p-0 m-0"><span class="fw-medium">Email:</span> fakemail@fake.fake</p>
+                </div>
+            </div>
+        </section>
     <div class="notification w-100" id="notification">
         <div class="container bg-primary w-50 shadow p-3 col-8" style="min-height: 50px;">
             <p>notification</p>

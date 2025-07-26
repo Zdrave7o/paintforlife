@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+main{
+    min-height: 100vh;
+}
+
 .logo{
     width:40px;
     height:40px;
