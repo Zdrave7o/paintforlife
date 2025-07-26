@@ -1,6 +1,6 @@
 //items. item creation and display
-const pages = ["home-page", "paints-page", "sprays-page"];
 const colorItems = [];
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 document.addEventListener("DOMContentLoaded", function() {
     openPage("home-page");
@@ -62,7 +62,7 @@ function displayPaints(colorItems){
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id})">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
@@ -86,7 +86,7 @@ function displayPaints(colorItems){
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id})">
+                        <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} Spray Can</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} spray designed for all surfaces</p>
@@ -112,7 +112,7 @@ function displayTrending(colorItems){
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm
          border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id})">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
@@ -128,7 +128,6 @@ function displayTrending(colorItems){
 }
 
 //cart actions
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function addToCart(id){
     const paint = colorItems.find(item => item.id === id);
@@ -160,7 +159,7 @@ function updateCart(items){
         itemCount += item.quantity;
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
-        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} removed from cart.`;
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} added to cart.`;
         html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2">
@@ -168,8 +167,8 @@ function updateCart(items){
                                             class="img-fluid rounded-3" alt="paint">
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)}
-                                        ${item.type}</p>
+                                        <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type}
+                                        </p>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                         <button class="btn quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
@@ -398,33 +397,74 @@ function confirmOrder() {
 }
 
 //page manipulation
-function openProductPage(color, price, type, id){
-    console.log(`Opening product page for color: ${color}, price: ${price}, type: ${type}, id: ${id}`);
+function openProductPage(color, price, type, id, image){
+    console.log(color, price, type, id, image);
     
+    const pages = document.querySelectorAll(".page");
+    pages.forEach(page => {
+        page.classList.add("d-none");
+        page.classList.remove("d-block");
+    })
+
+    const productPage = document.querySelector("#product-page");
+    productPage.classList.remove("d-none");
+    productPage.classList.add("d-block");
+    
+    const productDetails = document.querySelector("#product-details");
+    let firstWord = color.split("@")[0];
+    let secondWord = color.split("@")[1] || "";
+    let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} added to cart.`;
+    productDetails.innerHTML = `
+        <img src="assets/${image}" class="img-fluid col-lg-3 col-sm-5 px-3" alt="Product Image">
+                <div class="col-lg-3 col-sm-5 px-2">
+                    <h2 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type}</h2>
+                    <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} designed for smooth finish</p>
+                    <h4 class="card-text text-black my-1">Price:${price}$ </h4>
+                    <div class="container-fluid w-100 p-0 m-0">
+                        <button class="btn btn-sm p-0 m-0 w-50 h-100 p-2 fw-bold" style="background-color:${firstWord + secondWord};" onclick="addToCart(${id}); showNotification('${message}');">Add To Cart</button>
+                    </div>
+                </div>`
+
+    const similarProductsList = document.querySelector('#similar-products');
+    const similarProducts = colorItems.filter(paint => paint.type === type && paint.color !== color);
+    let html = "";
+    console.log(similarProducts.length);
+    
+    similarProducts.forEach(paint => {
+        firstWord = paint.color.split("@")[0];
+            secondWord = paint.color.split("@")[1] || "";
+            message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} added to cart.`;
+            html+= `<div class="card shadow-sm
+            border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
+                            <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
+                            <div class="card-body">
+                                <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
+                                <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="fw-bold">$${paint.price.toFixed(2)}</span>
+                                    <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>`
+    })
+    
+    similarProductsList.innerHTML = html;
 }
 
-function openPage(page){
-    const currentPage = pages.find((currentPage) => currentPage === page);
-    if(currentPage === page){
-        console.log(`Opening page: ${page}`);
-        pages.forEach((p) => {
-            switch(p){
-                case page:
-                    document.querySelector(`#${p}`).classList.remove("d-none");
-                    document.querySelector(`#${p}`).classList.add("d-block");
-                    document.querySelector(`#${p}-button`).classList.add("active");
-                    break;
-                default:
-                    document.querySelector(`#${p}`).classList.remove("d-block");
-                    document.querySelector(`#${p}`).classList.add("d-none");
-                    document.querySelector(`#${p}-button`).classList.remove("active");
-                    break;
-            }
-        })
-    }
-    else{
-        console.log("error");
-        
-    }
+function openPage(pageId){
+    const pages = document.querySelectorAll(".page");
+    pages.forEach(page => {
+        page.classList.add("d-none");
+        page.classList.remove("d-block");
+    })
+    const buttons = document.querySelectorAll(".pagebtn");
+    buttons.forEach(button => {
+        button.classList.remove("active");
+    });
+
+    const targetPage = document.querySelector(`#${pageId}`);
+    targetPage.classList.remove("d-none");
+    targetPage.classList.add("d-block");
+    document.querySelector(`#${pageId}-button`).classList.add("active");
 
 }

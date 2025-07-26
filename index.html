@@ -12,144 +12,155 @@
 
 <body class="m-0 p-0 overflow-x-hidden">
     <nav class="navbar navbar-expand-lg bg-body-tertiary position-relative">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1969/1969555.png">
-                    PaintForLife
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto text-black">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#" id="home-page-button" onclick="openPage('home-page')">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#all-paints" id="paints-page-button" onclick="openPage('paints-page')">Paints</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#spray-cans" id="sprays-page-button" onclick="openPage('sprays-page')">Sprays</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" onclick="openCart()" href="#">Cart</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="search-button" type="submit" onclick="location.href='#all-paints'">Search</button>
-                    </form>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1969/1969555.png">
+                PaintForLife
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto text-black">
+                    <li class="nav-item">
+                        <a class="nav-link active pagebtn" aria-current="page" href="#" id="home-page-button"
+                            onclick="openPage('home-page')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pagebtn" href="#all-paints" id="paints-page-button"
+                            onclick="openPage('paints-page')">Paints</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pagebtn" href="#spray-cans" id="sprays-page-button"
+                            onclick="openPage('sprays-page')">Sprays</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="openCart()" href="#">Cart</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="search-button" type="submit" onclick="location.href='#all-paints'">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-xxl-6 custom-cart bg-body-tertiary shadow" id="cart">
+            <div class="row d-flex justify-content-center align-items-center p-3" style="min-height: 100px;">
+                <div class="col-10" id="cartHtml">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-normal mb-0">Cart</h3>
+                        <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
+                        <div>
+                            <p class="mb-0"><span class="text-body" id="total">Total: $0.00 </span></p>
+                        </div>
+                    </div>
+
+
+                    <div class="card mb-4">
+                        <div class="card-body p-4 d-flex flex-row">
+                            <div data-mdb-input-init class="form-outline flex-fill">
+                                <input type="text" id="promo" class="form-control form-control-lg" />
+                                <label class="form-label" for="promo">Discount code</label>
+                            </div>
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-outline-warning btn-lg ms-3" onclick="applyPromoCode()">Apply</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-warning btn-block btn-lg" onclick="openOrderMenu()">Proceed to
+                                Pay</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+        </div>
 
-            <div class="col-xxl-6 custom-cart bg-body-tertiary shadow" id="cart">
-                <div class="row d-flex justify-content-center align-items-center p-3" style="min-height: 100px;">
-                    <div class="col-10" id="cartHtml">
-            
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0">Cart</h3>
-                            <h4 class="fw-normal mb-0" onclick="closeCart()">Close</h4>
-                            <div>
-                                <p class="mb-0"><span class="text-body" id="total">Total: $0.00 </span></p>
+        <section
+            class="container-fluid position-fixed top-0 start-0 w-100 bg-dark bg-opacity-50 text-white text-center p-2 z-3 order-menu"
+            style="height: 100%;" id="order-menu">
+            <div class="card col-10 px-1 py-4 m-auto position-relative" style="height:fit-content;">
+                <button class="btn quantity-btn position-absolute top-0" onclick="closeOrderMenu()">X</button>
+                <div class="row text-center">
+                    <h3 class="card-title p-2">Order</h3>
+                </div>
+                <div class="container mx-auto">
+                    <div class="row my-3">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                            <div class="form-group">
+                                <!-- <label for="name">Name</label> --> <input class="form-control" type="text"
+                                    placeholder="First Name" id="name">
                             </div>
                         </div>
-            
-                        
-                        <div class="card mb-4">
-                            <div class="card-body p-4 d-flex flex-row">
-                                <div data-mdb-input-init class="form-outline flex-fill">
-                                    <input type="text" id="promo" class="form-control form-control-lg" />
-                                    <label class="form-label" for="promo">Discount code</label>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                            <div class="form-group">
+                                <!-- <label for="name">Name</label> --> <input class="form-control" type="text"
+                                    placeholder="Second Name" id="second-name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                            <div class="form-group">
+                                <div class="input-group"> <input class="form-control" type="text" placeholder="Mobile"
+                                        id="phone">
+                                    <div class="input-group-text">+1</div>
                                 </div>
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-outline-warning btn-lg ms-3" onclick="applyPromoCode()">Apply</button>
                             </div>
                         </div>
-            
-                        <div class="card">
-                            <div class="card-body">
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-warning btn-block btn-lg" onclick="openOrderMenu()">Proceed to Pay</button>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                            <div class="form-group">
+                                <div class="input-group"> <input class="form-control" type="text" placeholder="Email"
+                                        id="email">
+                                </div>
                             </div>
                         </div>
-            
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                            <div class="form-group">
+                                <div class="input-group"> <input class="form-control" type="text" placeholder="Address"
+                                        id="address">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" d-flex flex-column text-center px-5 mt-3 mb-3"> <small class="agree-text">By
+                                placing this
+                                order you agree to</small> <a href="#" class="terms">Terms & Conditions</a> </div>
+                        <button class="btn btn-danger btn-block confirm-button col-lg-4 col-sm-6 mx-auto"
+                            onclick="confirmOrder()">Confirm</button>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <section
-                class="container-fluid position-fixed top-0 start-0 w-100 bg-dark bg-opacity-50 text-white text-center p-2 z-3 order-menu"
-                style="height: 100%;" id="order-menu">
-                <div class="card col-10 px-1 py-4 m-auto position-relative" style="height:fit-content;">
-                    <button class="btn quantity-btn position-absolute top-0" onclick="closeOrderMenu()">X</button>
-                    <div class="row text-center">
-                        <h3 class="card-title p-2">Order</h3>
-                    </div>
-                    <div class="container mx-auto">
-                        <div class="row my-3">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
-                                <div class="form-group">
-                                    <!-- <label for="name">Name</label> --> <input class="form-control" type="text"
-                                        placeholder="First Name" id="name">
-                                </div>
-                            </div>
-                        </div>
-            
-                        <div class="row my-3">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
-                                <div class="form-group">
-                                    <!-- <label for="name">Name</label> --> <input class="form-control" type="text"
-                                        placeholder="Second Name" id="second-name">
-                                </div>
-                            </div>
-                        </div>
-            
-                        <div class="row my-3">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
-                                <div class="form-group">
-                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Mobile" id="phone">
-                                        <div class="input-group-text">+1</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-3">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
-                                <div class="form-group">
-                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Email" id="email">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row my-3">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
-                                <div class="form-group">
-                                    <div class="input-group"> <input class="form-control" type="text" placeholder="Address" id="address">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class=" d-flex flex-column text-center px-5 mt-3 mb-3"> <small class="agree-text">By placing this
-                                    order you agree to</small> <a href="#" class="terms">Terms & Conditions</a> </div>
-                            <button class="btn btn-danger btn-block confirm-button col-lg-4 col-sm-6 mx-auto" onclick="confirmOrder()">Confirm</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </nav>
-    <main id="home-page" class="d-block">
+    </nav>
+    <main id="home-page" class="d-block page">
         <section class="main">
             <div class="container py-5">
                 <div class="row py-5">
                     <div class="col-lg-7 text-center">
                         <h1 class="pt-4">Colors. Where All Color Needs Meet</h1>
-                        <button class="btn btn-danger btn-lg mt-3" style="--bs-btn-font-size: 1.5rem; --bs-btn-border-radius:10px; --bs-btn-font-weight:bold;">See More</button>
-                    </div> 
+                        <button class="btn btn-danger btn-lg mt-3"
+                            style="--bs-btn-font-size: 1.5rem; --bs-btn-border-radius:10px; --bs-btn-font-weight:bold;">See
+                            More</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -239,7 +250,8 @@
             <div class="row p-3 text-bg-danger w-100 m-auto">
                 <div class="col-lg-6 col-sm-12">
                     <h4>Who are we?</h4>
-                    <p>We are a company that provides the best quality paints and tools for your needs. Our mission is to
+                    <p>We are a company that provides the best quality paints and tools for your needs. Our mission is
+                        to
                         bring color to your life with our wide range of products.</p>
                 </div>
                 <div class="col-lg-6 col-sm-12">
@@ -252,7 +264,7 @@
         </section>
 
     </main>
-    <main id="paints-page" class="d-none">
+    <main id="paints-page" class="d-none page">
         <div class="container text-center p-4">
             <h1>Paints Page</h1>
         </div>
@@ -263,22 +275,68 @@
             </div>
         </div>
     </main>
-    <main id="sprays-page" class="d-none">
+    <main id="sprays-page" class="d-none page">
         <div class="container text-center p-4">
             <h1>Sprays Page</h1>
         </div>
         <!-- Content for sprays page -->
         <div class="container-fluid py-5">
             <div class="row p-2 justify-content-center" id="sprays-list">
-                
+
             </div>
         </div>
     </main>
-
-    <div class="notification w-100" id="notification">
-            <div class="container bg-primary w-50 shadow p-3 col-8" style="min-height: 50px;">
-                <p>notification</p>
+    <main id="product-page" class="d-none page">
+        <!-- Content for product page -->
+        <div class="container-fluid py-5">
+            <div class="row p-2 justify-content-center" id="product-details">
+                <img src="assets/lightgreen.png" class="img-fluid col-lg-3 col-sm-5 px-3" alt="Product Image">
+                <div class="col-lg-3 col-sm-5 px-2">
+                    <h2 class="card-title">Product Name</h2>
+                    <p class="card-text text-muted mb-1">Blue paint designed for smooth finish</p>
+                    <p class="card-text text-primary my-1">Price: </p>
+                    <div class="container-fluid w-100 p-0 m-0">
+                        <button class="btn btn-sm p-0 m-0 w-50 h-100" onclick="">Add To Cart</button>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="container-fluid py-5">
+            <div class="row py-5">
+                <div class="col-lg-5 m-auto text-center">
+                    <h1>Related Products</h1>
+                    <h6 style="color: red;">Products, related to the ones you viewed</h6>
+                    <!--
+                    
+
+function openPage(pageId){
+    const pages = document.querySelectorAll(".page");
+    pages.forEach(page => {
+        page.classList.add("d-none");
+        page.classList.remove("d-block");
+    })
+    const buttons = document.querySelectorAll(".pagebtn");
+    buttons.forEach(button => {
+        button.classList.remove("active");
+    });
+
+    const targetPage = document.querySelector(`#${pageId}`);
+    targetPage.classList.remove("d-none");
+    targetPage.classList.add("d-block");
+    document.querySelector(`#${pageId}-button`).classList.add("active");
+
+}-->
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-4 justify-content-center" id="similar-products">
+
+        </div>
+    </main>
+    <div class="notification w-100" id="notification">
+        <div class="container bg-primary w-50 shadow p-3 col-8" style="min-height: 50px;">
+            <p>notification</p>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
