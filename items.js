@@ -160,7 +160,7 @@ function updateCart(items){
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} added to cart.`;
-        html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
+        html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm" onclick="openProductPage('${item.color}', ${item.price}, '${item.type}', ${item.id}, '${item.image}')">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2">
                                         <img src="assets/${item.image}"
@@ -429,13 +429,13 @@ function openProductPage(color, price, type, id, image){
     const similarProductsList = document.querySelector('#similar-products');
     const similarProducts = colorItems.filter(paint => paint.type === type && paint.color !== color);
     let html = "";
-    console.log(similarProducts.length);
+    const buttons = [];
     
     similarProducts.forEach(paint => {
         firstWord = paint.color.split("@")[0];
-            secondWord = paint.color.split("@")[1] || "";
-            message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} added to cart.`;
-            html+= `<div class="card shadow-sm
+        secondWord = paint.color.split("@")[1] || "";
+        message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} added to cart.`;
+        html+= `<div class="card shadow-sm
             border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
                             <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                             <div class="card-body">
@@ -443,13 +443,18 @@ function openProductPage(color, price, type, id, image){
                                 <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                    <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                                    <button class="btn btn-sm add-to-cart" id="${firstWord + secondWord}-button" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                                 </div>
                             </div>
                         </div>`
-    })
+    })        
     
     similarProductsList.innerHTML = html;
+
+     window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
 
 function openPage(pageId){
@@ -468,4 +473,8 @@ function openPage(pageId){
     targetPage.classList.add("d-block");
     document.querySelector(`#${pageId}-button`).classList.add("active");
 
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
