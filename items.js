@@ -3,6 +3,7 @@ const colorItems = [];
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 document.addEventListener("DOMContentLoaded", function() {
+    window.location.hash = 'home-page';
     openPage("home-page");
     createPaints();
     displayPaints(colorItems);
@@ -160,14 +161,14 @@ function updateCart(items){
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} added to cart.`;
-        html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm" onclick="openProductPage('${item.color}', ${item.price}, '${item.type}', ${item.id}, '${item.image}')">
+        html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2">
                                         <img src="assets/${item.image}"
-                                            class="img-fluid rounded-3" alt="paint">
+                                            class="img-fluid rounded-3" alt="paint" onclick="openProductPage('${item.color}', ${item.price}, '${item.type}', ${item.id}, '${item.image}')">
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type}
+                                        <p class="lead fw-normal mb-2" onclick="openProductPage('${item.color}', ${item.price}, '${item.type}', ${item.id}, '${item.image}')">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type}
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -399,7 +400,9 @@ function confirmOrder() {
 //page manipulation
 function openProductPage(color, price, type, id, image){
     console.log(color, price, type, id, image);
-    
+
+    window.location.hash = 'product-page';
+
     const pages = document.querySelectorAll(".page");
     pages.forEach(page => {
         page.classList.add("d-none");
@@ -429,7 +432,6 @@ function openProductPage(color, price, type, id, image){
     const similarProductsList = document.querySelector('#similar-products');
     const similarProducts = colorItems.filter(paint => paint.type === type && paint.color !== color);
     let html = "";
-    const buttons = [];
     
     similarProducts.forEach(paint => {
         firstWord = paint.color.split("@")[0];
@@ -457,7 +459,15 @@ function openProductPage(color, price, type, id, image){
     });
 }
 
+window.addEventListener('hashchange', () => {
+  const route = window.location.hash.slice(1); // remove #
+  openPage(route);
+});
+
+
 function openPage(pageId){
+    window.location.hash = pageId;
+    
     const pages = document.querySelectorAll(".page");
     pages.forEach(page => {
         page.classList.add("d-none");
@@ -468,10 +478,17 @@ function openPage(pageId){
         button.classList.remove("active");
     });
 
-    const targetPage = document.querySelector(`#${pageId}`);
-    targetPage.classList.remove("d-none");
-    targetPage.classList.add("d-block");
-    document.querySelector(`#${pageId}-button`).classList.add("active");
+    const targetPage = document.getElementById(`${pageId}`);
+    if (targetPage) {
+        targetPage.classList.remove("d-none");
+        targetPage.classList.add("d-block");
+    } else{
+        openPage("home-page");
+    }
+    
+    
+    const button = document.querySelector(`#${pageId}-button`);
+    button.classList.add("active");
 
     window.scrollTo({
         top: 0,
