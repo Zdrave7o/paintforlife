@@ -10,10 +10,10 @@
     <title>ColorPick</title>
 </head>
 
-<body class="m-0 p-0 overflow-x-hidden">
+<body class="m-0 p-0 overflow-x-hidden position-relative w-100">
     <nav class="navbar navbar-expand-lg bg-body-tertiary position-relative">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand">
                 <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1969/1969555.png">
                 PaintForLife
             </a>
@@ -312,6 +312,21 @@
                 </div>
             </div>
         </section>
+    <button class="btn btn-danger rounded position-fixed text-center p-1" style="height:50px; width:50px; right: 10px; bottom: 10px; z-index: 5;" id="chat-bot-button">Chat</button>
+    <div class="container col-9 col-lg-2 col-md-4 col-sm-6 position-fixed p-0 rounded d-block bg-light d-none" id="chat-bot" style="height:50%; right: 10px; bottom: 10px;">
+        <div class="bg-danger container-fluid rounded-top" style=" height:10%;">
+            <div class="image">H</div>
+        </div>
+        <div class="row text-center">
+            <h1>Ask Me</h1>
+        </div>
+        <div class="row p-3">
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
+        </div>
+    </div>
     <div class="notification w-100" id="notification">
         <div class="container bg-primary w-50 shadow p-3 col-8" style="min-height: 50px;">
             <p>notification</p>

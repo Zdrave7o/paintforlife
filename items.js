@@ -3,7 +3,6 @@ const colorItems = [];
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 document.addEventListener("DOMContentLoaded", function() {
-    window.location.hash = 'home-page';
     openPage("home-page");
     createPaints();
     displayPaints(colorItems);
@@ -466,8 +465,13 @@ window.addEventListener('hashchange', () => {
 
 
 function openPage(pageId){
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
     window.location.hash = pageId;
-    
+
     const pages = document.querySelectorAll(".page");
     pages.forEach(page => {
         page.classList.add("d-none");
@@ -489,9 +493,24 @@ function openPage(pageId){
     
     const button = document.querySelector(`#${pageId}-button`);
     button.classList.add("active");
-
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
 }
+
+//chatbot
+const chatBot = document.querySelector("#chat-bot");
+const chatBotBtn = document.querySelector("#chat-bot-button");
+
+function interactChatBot(){
+    if(chatBot.classList.contains("d-none")){
+        chatBot.classList.remove("d-none");
+        chatBot.classList.add("d-block")
+        chatBotBtn.innerHTML = "Close";
+    } else{
+        chatBot.classList.remove("d-block");
+        chatBot.classList.add("d-none");
+        chatBotBtn.innerHTML = "Chat";
+
+    }
+}
+
+
+chatBotBtn.addEventListener("click", interactChatBot);
