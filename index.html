@@ -11,7 +11,7 @@
 </head>
 
 <body class="m-0 p-0 overflow-x-hidden position-relative w-100">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary position-relative">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top w-100 z-10">
         <div class="container-fluid">
             <a class="navbar-brand">
                 <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1969/1969555.png">
@@ -320,16 +320,12 @@
         <div class="row text-center">
             <h1>Ask Me</h1>
         </div>
-        <div class="row p-3">
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
-            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto">What is</button>
+        <div class="row p-3 id = ">
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto q-button" question="What aligns with blue?">What aligns with blue?</button>
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto q-button" question="What aligns with red?">What aligns with red?</button>
+            <button class="btn btn-primary p-3 col-8 mt-2 mx-auto q-button" question="What aligns with yellow?">What aligns with yellow?</button>
         </div>
+        <p class="p-2" id="answer"></p>
     </div>
     <div class="notification w-100" id="notification">
         <div class="container bg-primary w-50 shadow p-3 col-8" style="min-height: 50px;">

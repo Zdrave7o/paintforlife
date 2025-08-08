@@ -308,8 +308,13 @@ function applyPromoCode() {
 const orderMenu = document.querySelector("#order-menu");
 
 function openOrderMenu() {
-    closeCart();
-    orderMenu.style.display = "flex";
+    if(cart.length <= 0 ){
+        window.alert("You should add items to your cart before proceeding");
+    } else{
+        closeCart();
+        toggleChatBot();
+        orderMenu.style.display = "flex";
+    }
 }
 
 function closeOrderMenu() {
@@ -498,8 +503,21 @@ function openPage(pageId){
 //chatbot
 const chatBot = document.querySelector("#chat-bot");
 const chatBotBtn = document.querySelector("#chat-bot-button");
+const questionButtons = document.querySelectorAll(".q-button");
+activateQuestionBtnsListener();
 
-function interactChatBot(){
+function activateQuestionBtnsListener(){
+    for(let i = 0; i<questionButtons.length; i++){
+    const qButton = questionButtons[i];
+    
+    qButton.addEventListener("click", function(){
+        const question = qButton.getAttribute("question");
+        askChatbot(question)
+    })
+}
+}
+
+function toggleChatBot(){
     if(chatBot.classList.contains("d-none")){
         chatBot.classList.remove("d-none");
         chatBot.classList.add("d-block")
@@ -512,5 +530,19 @@ function interactChatBot(){
     }
 }
 
+function askChatbot(question){
+    const answer = document.getElementById("answer");
+    answer.innerHTML = "";
 
-chatBotBtn.addEventListener("click", interactChatBot);
+    if(question.includes("aligns" && "blue")){
+        answer.innerHTML = "Blue aligns perfectly with black and white";
+
+    } else if (question.includes("aligns" && "red")){
+        answer.innerHTML = "Red aligns perfectly with green and white";
+        
+    } else{
+        answer.innerHTML = "f u punk"
+    }
+}
+
+chatBotBtn.addEventListener("click", toggleChatBot);
