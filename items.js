@@ -531,18 +531,42 @@ function toggleChatBot(){
 }
 
 function askChatbot(question){
-    const answer = document.getElementById("answer");
-    answer.innerHTML = "";
+    const answerDisplay = document.getElementById("answer");
+    let answer = ""
+    answerDisplay.innerHTML = "";
+
+    questionButtons.forEach(button => {
+        button.disabled = true;
+    })
 
     if(question.includes("aligns" && "blue")){
-        answer.innerHTML = "Blue aligns perfectly with black and white";
+        answer = "Blue aligns perfectly with black and white";
 
     } else if (question.includes("aligns" && "red")){
-        answer.innerHTML = "Red aligns perfectly with green and white";
+        answer = "Red aligns perfectly with green and white";
         
     } else{
-        answer.innerHTML = "f u punk"
+        answer = "f u punk"
     }
+
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function display(){
+        for(let i = 0; i<answer.length; i++){
+            answerDisplay.innerHTML += answer[i];
+
+            await delay(50);
+        }
+
+        questionButtons.forEach(button => {
+            button.disabled = false;
+        })
+    }
+
+    display();
+    
 }
 
 chatBotBtn.addEventListener("click", toggleChatBot);

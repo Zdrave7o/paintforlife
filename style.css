@@ -81,3 +81,21 @@ main{
   opacity: 1;
   pointer-events: auto;
 }       
+
+.profile-image{
+    width:40px;
+    height:40px;
+}
+
+.profile-image img{
+    width: 40px;
+    height:40px;
+}
+
+.active-status{
+    width:10px;
+    height: 10px;
+    bottom: 0;
+    right:0;
+    background-color: hsl(95, 100%, 50%);
+}
