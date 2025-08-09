@@ -18,7 +18,7 @@ function addPaint(color, price, type, id){
             imageName = `${imageName}.png`;
             break;
         case "Spray":
-            imageName = `spray-${imageName}.png`;
+            imageName = `${imageName}-spray.png`;
             break;
         default:
             console.error("Unknown paint type:", type);
@@ -61,7 +61,7 @@ function displayPaints(colorItems){
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
-        html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
+        html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3 product-card" style="max-width: 300px;">
                         <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
@@ -85,8 +85,8 @@ function displayPaints(colorItems){
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
-        html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
-                        <img src="assets/spray-${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
+        html+= `<div class="card shadow-sm border-0 col-12 col-sm-6 col-md-4 mb-4 m-3 product-card" style="max-width: 300px;">
+                        <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} Spray Can</h5>
                             <p class="card-text text-muted mb-1">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} spray designed for all surfaces</p>
@@ -111,7 +111,7 @@ function displayTrending(colorItems){
         let secondWord = paint.color.split("@")[1] || "";
         let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type} added to cart.`;
         html+= `<div class="card shadow-sm
-         border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
+         border-0 col-12 col-sm-6 col-md-4 mb-4 m-3 product-card" style="max-width: 300px;">
                         <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                         <div class="card-body">
                             <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
@@ -312,7 +312,6 @@ function openOrderMenu() {
         window.alert("You should add items to your cart before proceeding");
     } else{
         closeCart();
-        toggleChatBot();
         orderMenu.style.display = "flex";
     }
 }
@@ -442,7 +441,7 @@ function openProductPage(color, price, type, id, image){
         secondWord = paint.color.split("@")[1] || "";
         message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} added to cart.`;
         html+= `<div class="card shadow-sm
-            border-0 col-12 col-sm-6 col-md-4 mb-4 m-3" style="max-width: 300px;">
+            border-0 col-12 col-sm-6 col-md-4 mb-4 m-3 product-card" style="max-width: 300px;">
                             <img src="assets/${paint.image}" class="img-fluid w-50 m-auto" alt="Product Image" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">
                             <div class="card-body">
                                 <h5 class="card-title">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${paint.type}</h5>
@@ -457,9 +456,9 @@ function openProductPage(color, price, type, id, image){
     
     similarProductsList.innerHTML = html;
 
-     window.scrollTo({
+    window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: "instant"
     });
 }
 
@@ -470,11 +469,20 @@ window.addEventListener('hashchange', () => {
 
 
 function openPage(pageId){
-    window.scrollTo({
+    if (pageId !== "product-page"){
+        const button = document.querySelector(`#${pageId}-button`);
+        button.classList.add("active");
+        window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: "smooth"
     });
-
+    } else{
+        window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+    }
+    
     window.location.hash = pageId;
 
     const pages = document.querySelectorAll(".page");
@@ -495,9 +503,6 @@ function openPage(pageId){
         openPage("home-page");
     }
     
-    
-    const button = document.querySelector(`#${pageId}-button`);
-    button.classList.add("active");
 }
 
 //chatbot
