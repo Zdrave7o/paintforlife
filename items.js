@@ -578,8 +578,8 @@ function askChatbot(question){
     } else if (question.includes("What is a good color for a kitchen?")){
         answer = "Kitchens colors should be lighter, giving the proper vibe for good food!";
         
-    } else{
-        answer = "f u punk"
+    } else if(question.includes("What is a good color for a bedroom?")){
+        answer = "Bedrooms are a place for calm and restful sleep, so the best colors are combinations of light and dark schemes";
     }
 
     function delay(ms) {
@@ -603,3 +603,16 @@ function askChatbot(question){
 }
 
 chatBotBtn.addEventListener("click", toggleChatBot);
+
+
+//scrolling to products 
+function smoothScroll(selector) {
+  const target = document.querySelector(selector);
+  if (!target) return;
+
+  const navbar = document.querySelector('.navbar');
+  const offset = navbar ? navbar.getBoundingClientRect().height : 0;
+  const top = window.scrollY + target.getBoundingClientRect().top - offset;
+
+  window.scrollTo({ top, behavior: 'smooth' });
+}

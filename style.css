@@ -118,3 +118,27 @@ main{
 .cursor-pointer{
     cursor: pointer;
 }
+
+.page{
+    overflow-x: hidden;
+}
+
+.bot-details{
+    height:fit-content;
+}
+
+.bot-container{
+    width: 360px;
+    height: fit-content;
+    right: 30px;
+    bottom: 30px;
+}
+
+@media (max-width:600px){
+    .bot-container{
+        width: calc(100% - 60px); /* leave 30px gap on each side */
+        left: 30px;
+        right: 30px;
+    }
+}
+
