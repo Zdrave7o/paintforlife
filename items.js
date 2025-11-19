@@ -2,6 +2,32 @@
 const colorItems = [];
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+// Color mapping for CSS
+const colorMap = {
+    "dodgerblue": "#1E90FF",
+    "lightgreen": "#90EE90",
+    "red": "#FF0000",
+    "pink": "#FFC0CB",
+    "yellow": "#FFFF00",
+    "purple": "#800080"
+};
+
+//creating class for the products
+class Product {
+    constructor(color, price, id, type, imageName) {
+        this.id = id;
+        this.color = color;
+        this.type = type;
+        this.image = imageName;
+        this.price = Number(price);
+    }
+}
+
+function getCSSColor(firstWord, secondWord) {
+    const key = (firstWord + secondWord).toLowerCase();
+    return colorMap[key] || "#ff0303ff"; // fallback to red
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     openPage("home-page");
     createPaints();
@@ -11,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function addPaint(color, price, type, id){
-    type = type.charAt(0).toUpperCase() + type.slice(1);
     let imageName = color.split("@")[0] + (color.split("@")[1] || "");
     switch(type) {
         case "Paint":
@@ -23,42 +48,45 @@ function addPaint(color, price, type, id){
         default:
             console.error("Unknown paint type:", type);
             return;
-    }
-
-
-    class Paint{
-    constructor(color, price, id){
-        this.id = id;
-        this.color = color,
-        this.type = type || "Paint",
-        this.image = imageName,
-        this.price = Number(price)
-    }
     }   
 
-    colorItems.push(new Paint(color, price, id));
+    colorItems.push(new Product(color, price, id, type, imageName));
 }
 
 //creating the products
 function createPaints(){
     let colorCreationId = 0;
-    addPaint("dodger@blue", 14.99, "paint", colorCreationId++);
-    addPaint("light@green", 14.99, "paint", colorCreationId++);
-    addPaint("red@", 14.99, "paint", colorCreationId++);
-    addPaint("pink@", 14.99, "paint", colorCreationId++);
-    addPaint("yellow@", 14.99, "paint", colorCreationId++);
+    addPaint("dodger@blue", 14.99, "Paint", colorCreationId++);
+    addPaint("light@green", 14.99, "Paint", colorCreationId++);
+    addPaint("red@", 14.99, "Paint", colorCreationId++);
+    addPaint("pink@", 14.99, "Paint", colorCreationId++);
+    addPaint("yellow@", 14.99, "Paint", colorCreationId++);
 
-    addPaint("purple@", 14.99, "spray", colorCreationId++);
-    addPaint("yellow@", 14.99, "spray", colorCreationId++);
-    addPaint("red@", 14.99, "spray", colorCreationId++);
+    addPaint("purple@", 14.99, "Spray", colorCreationId++);
+    addPaint("yellow@", 14.99, "Spray", colorCreationId++);
+    addPaint("red@", 14.99, "Spray", colorCreationId++);
+
+    console.log("colorItems after createPaints:", colorItems); // DEBUG
+}
+
+
+function isArraySafe(x) {
+    // robust check that doesn't depend on Array.isArray (works even if Array was shadowed)
+    return Object.prototype.toString.call(x) === '[object Array]';
 }
 
 //displaying the  products
-function displayPaints(colorItems){
+function displayPaints(items = colorItems){
+    console.log("displayPaints called with:", items);
+    if (!isArraySafe(items)) {
+        console.error("displayPaints: expected an array but got:", items);
+        // fallback to colorItems if it's valid, otherwise an empty array
+        items = isArraySafe(colorItems) ? colorItems : [];
+    }
     let html = "";
 
     //displaying the paints
-    const paints = colorItems.filter(paint => paint.type === "Paint");
+    const paints = items.filter(paint => paint.type === "Paint");
     paints.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
@@ -70,13 +98,11 @@ function displayPaints(colorItems){
                             <p class="card-text cursor-pointer text-muted mb-1" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${getCSSColor(firstWord, secondWord)}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                             </div>
                         </div>
-                    </div>`
-
-
-    })
+                    </div>`;
+    });
 
     document.querySelector("#all-paints").innerHTML = html;
     document.querySelector("#paints-list").innerHTML = html;
@@ -84,7 +110,7 @@ function displayPaints(colorItems){
     html = "";
 
     //displaying the spray cans
-    const sprays = colorItems.filter(paint => paint.type === "Spray");
+    const sprays = items.filter(paint => paint.type === "Spray");
     sprays.forEach(paint => {
         let firstWord = paint.color.split("@")[0];
         let secondWord = paint.color.split("@")[1] || "";
@@ -96,7 +122,7 @@ function displayPaints(colorItems){
                             <p class="card-text cursor-pointer text-muted mb-1" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} spray designed for all surfaces</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${getCSSColor(firstWord, secondWord)}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                             </div>
                         </div>
                     </div>`
@@ -123,7 +149,7 @@ function displayTrending(colorItems){
                             <p class="card-text cursor-pointer text-muted mb-1" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                <button class="btn btn-sm" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                                <button class="btn btn-sm" style="background-color:${getCSSColor(firstWord, secondWord)}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                             </div>
                         </div>
                     </div>`
@@ -168,7 +194,7 @@ function updateCart(items){
         itemCount += item.quantity;
         let firstWord = item.color.split("@")[0];
         let secondWord = item.color.split("@")[1] || "";
-        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} added to cart.`;
+        let message = `${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${item.type} removed from cart.`;
         html += `       <div class="card-body p-4 bg-white mb-4 rounded-3 shadow-sm">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2">
@@ -201,7 +227,7 @@ function updateCart(items){
     })
 
     //displaying bottom information and contents of the cart
-    document.querySelector("#cartHtml").innerHTML = html + `
+    document.getElementById("cartHtml").innerHTML = html + `
                             <div class="card mb-4">
                             <div class="card-body p-4 d-flex flex-row">
                                 <div class="form-outline flex-fill">
@@ -276,16 +302,52 @@ function closeCart(){
 }
 
 //search bar
+const searchBar = document.querySelector(".search");
+const resultsContainer = document.querySelector(".search-results");
 function searchPaints(query) {
     const results = colorItems.filter(paint => paint.color.toLowerCase().includes(query.toLowerCase()));
-    displayPaints(results);
+    
+    resultsContainer.classList.remove("d-none");
+    resultsContainer.classList.add("d-block");
+    if(results.length === 0){
+        resultsContainer.innerHTML = `<p class="p-2 text-center">No Results</p>`;
+        return;
+    }
+
+    resultsContainer.innerHTML = "";
+    results.forEach(foundProduct => {
+        let firstWord = foundProduct.color.split("@")[0];
+        let secondWord = foundProduct.color.split("@")[1] || "";
+        resultsContainer.innerHTML+= `<div class="container-fluid search-result py-2">
+                            <div class="container-fluid d-flex align-items-start bg-light justify-content-between">
+                                <img class="search-result-picture blend-img" src="assets/${foundProduct.image}">
+                                <div class="container">
+                                    <p class="fs-6">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${foundProduct.type}</p>
+                                    <p class="fs-6">${foundProduct.price}</p>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <button class="btn col-12" style="background-color:${getCSSColor(firstWord, secondWord)};" onclick="openProductPage('${foundProduct.color}', ${foundProduct.price}, '${foundProduct.type}', ${foundProduct.id}, '${foundProduct.image}')">View</button>
+                            </div>
+                        </div>`;
+    });
 }
 
-document.querySelector(".search-button").addEventListener("click", function(event) {
-    event.preventDefault();
+
+//dynamic search with input
+searchBar.addEventListener("input", () => {
     const query = document.querySelector(".search").value;
     searchPaints(query);
 });
+
+//hides the results if the user clicks anywhere else than in the input field
+document.addEventListener("click", function(event){
+    if (event.target !== searchBar && !resultsContainer.contains(event.target)) {
+        resultsContainer.classList.remove("d-block");
+        resultsContainer.classList.add("d-none");
+    }
+})
+
 
 //promo code
 let isUsed = false;
@@ -447,11 +509,11 @@ function openProductPage(color, price, type, id, image){
     productDetails.innerHTML = `
         <img src="assets/${image}" class="img-fluid col-lg-3 col-sm-5 px-3" alt="Product Image">
                 <div class="col-lg-3 col-sm-5 p-3">
-                    <h2 class="card-title mt-3 py-2" style="border-bottom: 5px solid ${firstWord + secondWord}">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type}</h2>
+                    <h2 class="card-title mt-3 py-2" style="border-bottom: 5px solid ${getCSSColor(firstWord, secondWord)}">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type}</h2>
                     <p class="card-text text-muted mt-3">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} ${type} designed for smooth finish</p>
                     <h4 class="card-text text-black mt-3">Price: <span class="font-weight-bolder">$${price}</span> </h4>
                     <div class="container-fluid w-100 p-0 m-0">
-                        <button class="btn btn-sm p-0 m-0 w-50 h-100 p-2 fw-bold" style="background-color:${firstWord + secondWord};" onclick="addToCart(${id}); showNotification('${message}');">Add To Cart</button>
+                        <button class="btn btn-sm p-0 m-0 w-50 h-100 p-2 fw-bold" style="background-color:${getCSSColor(firstWord, secondWord)};" onclick="addToCart(${id}); showNotification('${message}');">Add To Cart</button>
                     </div>
                 </div>`;
 
@@ -472,7 +534,7 @@ function openProductPage(color, price, type, id, image){
                                 <p class="card-text cursor-pointer text-muted mb-1" onclick="openProductPage('${paint.color}', ${paint.price}, '${paint.type}', ${paint.id}, '${paint.image}')">${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase() + secondWord.slice(1)} paint designed for smooth finish</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fw-bold">$${paint.price.toFixed(2)}</span>
-                                    <button class="btn btn-sm add-to-cart" id="${firstWord + secondWord}-button" style="background-color:${firstWord + secondWord}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
+                                    <button class="btn btn-sm add-to-cart" id="${firstWord + secondWord}-button" style="background-color:${getCSSColor(firstWord, secondWord)}; color:black; font-weight:bold;" onclick="addToCart(${paint.id}); showNotification('${message}');">Add to Cart</button>
                                 </div>
                             </div>
                         </div>`
@@ -550,6 +612,7 @@ function activateQuestionBtnsListener(){
 }
 }
 
+//showing the chatbot
 function toggleChatBot(){
     if(chatBot.classList.contains("d-none")){
         chatBot.classList.remove("d-none");
@@ -563,6 +626,7 @@ function toggleChatBot(){
     }
 }
 
+//asking preset questions with answers
 function askChatbot(question){
     const answerDisplay = document.getElementById("answer");
     let answer = ""
@@ -586,6 +650,7 @@ function askChatbot(question){
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    //chatbot slow typing effect
     async function display(){
         for(let i = 0; i<answer.length; i++){
             answerDisplay.innerHTML += answer[i];
@@ -601,6 +666,7 @@ function askChatbot(question){
     display();
     
 }
+
 
 chatBotBtn.addEventListener("click", toggleChatBot);
 

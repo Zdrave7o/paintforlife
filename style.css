@@ -142,3 +142,22 @@ main{
     }
 }
 
+.search-results{
+    width:270px;
+    height:320px;
+    bottom: -320px;
+    left:-60px;
+}
+@media (max-width:992px){
+    .search-results{
+        left:10px;
+    }
+}
+.search-result{
+    height:160px;
+}
+
+.search-result-picture{
+    width:60px;
+    height:auto;
+}
