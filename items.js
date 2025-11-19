@@ -475,13 +475,13 @@ function confirmOrder() {
         })
         .then(data => {
             console.log("Order successfully sent:", data);
+             alert(`Order confirmed!\nName: ${order.name}\nEmail: ${order.email}\nPhone: ${order.phone}\nAddress: ${order.address}\nItems: ${order.items.map(item => `${item.color} (x${item.quantity})`).join(", ")}\nTotal Price: $${order.price.toFixed(2)}`);
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => {
+            console.error("Error:", error)
+             alert(`There was a problem with sending your order. Please try again. Error: ${error}`);
+        });
 
-    alert(`Order confirmed!\nName: ${order.name}\nEmail: ${order.email}\nPhone: ${order.phone}\nAddress: ${order.address}\nItems: ${order.items.map(item => `${item.color} (x${item.quantity})`).join(", ")}\nTotal Price: $${order.price.toFixed(2)}`);
-    console.log(order.price);
-    cart.length = 0; // Clear the cart after order confirmation
-    updateCart(cart);
     closeOrderMenu();
     localStorage.removeItem("order");
 }
